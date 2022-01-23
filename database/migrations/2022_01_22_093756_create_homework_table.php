@@ -15,6 +15,14 @@ class CreateHomeworkTable extends Migration
     {
         Schema::create('homework', function (Blueprint $table) {
             $table->id();
+            $table->string('title');
+            $table->string('requirement_file');
+            $table->bigInteger('course_id')->unsigned();
+            $table->foreign('course_id')
+                  ->references('id')
+                  ->on('courses')
+                  ->onDelete('cascade');
+            $table->dateTime('end_date');//homework deadline
             $table->timestamps();
         });
     }
