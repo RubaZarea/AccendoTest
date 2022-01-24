@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateHomeworkTable extends Migration
+class CreateCoursesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,19 @@ class CreateHomeworkTable extends Migration
      */
     public function up()
     {
-        Schema::create('homework', function (Blueprint $table) {
+        Schema::create('courses', function (Blueprint $table) {
+            
             $table->id();
-            $table->string('title');
-            $table->string('requirement_file');
-            $table->bigInteger('course_id')->unsigned();
-            $table->foreign('course_id')
+            $table->string('name');
+            $table->string('description')->nullable();
+            $table->string('semester');
+            $table->bigInteger('teacher_id')->unsigned();
+            $table->foreign('teacher_id')
                   ->references('id')
-                  ->on('courses')
+                  ->on('teachers')
                   ->onDelete('cascade');
-            $table->dateTime('end_date');//homework deadline
             $table->timestamps();
+
         });
     }
 
@@ -34,6 +36,6 @@ class CreateHomeworkTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('homework');
+        Schema::dropIfExists('courses');
     }
 }

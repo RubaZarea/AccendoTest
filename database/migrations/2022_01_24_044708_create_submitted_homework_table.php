@@ -14,9 +14,9 @@ class CreateSubmittedHomeworkTable extends Migration
     public function up()
     {
         Schema::create('submitted_homework', function (Blueprint $table) {
-            $table->id();
-            $table->bigInteger('homework_id')->unsigned();
-  $table->foreign('homework_id')
+           $table->id();
+           $table->bigInteger('homework_id')->unsigned();
+           $table->foreign('homework_id')
                   ->references('id')
                   ->on('homework')
                   ->onDelete('cascade');
