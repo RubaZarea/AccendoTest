@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\UserController;
+use App\Http\Controllers\API\StudentsController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -22,10 +23,10 @@ use App\Http\Controllers\API\UserController;
 Route::post("register",[UserController::class,'register']);
 
 Route::post("login", [UserController::class,'login']);
-
-
+//Route::post("addStudent",[StudentsController::class,'save']);
 
 
 Route::group(['middleware' => 'auth:api'], function(){
 Route::post("details", [UserController::class,'details']);
+
 });// it need token to get into details
