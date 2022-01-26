@@ -14,7 +14,8 @@ public $successStatus = 200;
      * 
      * @return \Illuminate\Http\Response 
      */ 
-    public function login(){ 
+    public function login(Request $request){ 
+    
         if(Auth::attempt(['email' => request('email'), 'password' => request('password')])){ 
             $user = Auth::user(); 
             $success['token'] =  $user->createToken('MyApp')-> accessToken; 
@@ -22,7 +23,26 @@ public $successStatus = 200;
         } 
         else{ 
             return response()->json(['error'=>'Unauthorized'], 401); 
-        } 
+        }
+
+       /* try
+        {
+            $validator = Validator::make($request->all(), [ 
+            'name' => 'required', 
+            'email' => 'required|email', 
+            'password' => 'required', 
+            'confirmPassword' => 'required|same:password', 
+        ]);
+            if ($validator->fails()) { 
+                $error = $validator-> errors()->all()[0];
+                return response()->json(['status'=>'false','message'=>$error,'data'=>[]],422);
+        }
+        else 
+        {
+            $user=User::
+        }
+*/
+
     }
 /** 
      * Register api 
