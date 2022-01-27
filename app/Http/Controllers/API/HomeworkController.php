@@ -11,6 +11,21 @@ use Validator;
 
 class HomeworkController extends Controller
 {
+    public function homeworkByCourse($id)
+    {
+
+
+        return Course::with("homework")->where("id",$id)->get();
+
+       // find($id)->homework;
+
+
+       
+
+      //  return response()->json(['homeworks'=>$homeworks],200);
+
+
+    }
     public function add(Request $request)
     {
         try{
@@ -18,7 +33,7 @@ class HomeworkController extends Controller
             $validator = Validator::make($request->all(), [ 
             'title' => 'required', 
             'end_date' => 'required|date',
-            'requirements_file' => 'required', ]);
+            'homework_requirements_file' => 'required|mimes:pdf', ]);
 
             if ($validator->fails()) { 
              return response()->json(['error'=>$validator->errors()], 401);            
@@ -40,7 +55,7 @@ class HomeworkController extends Controller
              
 
 
-            $uploaded_file=$request->file->store('apiDocuments');
+            $uploaded_file=$request->homework_requirements_file->store('apiDocuments');
 
             $homework=new Homework;
             $homework->title = $request->title;
@@ -81,6 +96,14 @@ class HomeworkController extends Controller
 
 
 
+        }
+
+        public function downloadFile(Request $request)
+
+        {
+            $file_name=$request->requirement_file;
+
+            return response()->download(storage_path('app/apiDocuments/'.$file_name),'image');
         }
 
     }
