@@ -22,7 +22,7 @@ public $successStatus = 200;
             return response()->json(['success' => $success], $this-> successStatus); 
         } 
         else{ 
-            return response()->json(['error'=>'Unauthorized'], 401); 
+            abort(401, 'Unauthorized');
         }
 
        /* try

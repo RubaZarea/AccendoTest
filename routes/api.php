@@ -24,12 +24,16 @@ Route::post("register",[UserController::class,'register']);
 
 Route::post("login", [UserController::class,'login']);
 
-//Route::post("add-homework",[HomeworkController::class,'add']);
+//Route::delete("delete-homework/{id}",[HomeworkController::class,'delete']);
 
 
 Route::group(['middleware' => 'auth:api'], function(){
-Route::post("details", [UserController::class,'details']);
-Route::post("add-homework",[HomeworkController::class,'add']);
-});// it need token to get into details
+  //Route::post("details", [UserController::class,'details']);
+
+   Route::group(['middleware' => 'TeacherPages'], function(){
+    Route::delete("homework/delete/{id}",[HomeworkController::class,'delete']);
+    Route::post("homework/add",[HomeworkController::class,'add']);
+});
+});
 
 
