@@ -15,14 +15,10 @@ class HomeworkController extends Controller
     {
 
 
-        return Course::with("homework")->where("id",$id)->get();
-
+         
+       $homeworkByCourse=Course::with("homework")->where("id",$id)->get();
        // find($id)->homework;
-
-
-       
-
-      //  return response()->json(['homeworks'=>$homeworks],200);
+       return response()->json(['status'=>'true','message'=>"homework list according to course id",'course'=>$homeworkByCourse]);
 
 
     }
@@ -60,14 +56,16 @@ class HomeworkController extends Controller
             $homework=new Homework;
             $homework->title = $request->title;
             $homework->end_date= date('Y-m-d H:i:s' , strtotime($request->end_date));
-            $homework->requirement_file=$request->file->hashName();
+            $homework->requirement_file=$request->homework_requirements_file->hashName();
             $homework->course_id=$courseId;
             $result= $homework->save();
 
             if($result)
-                return ["result"=>"homework added successfully"];
+               return response()->json (['status'=>'true','message'=>"homework added successfully"]);
+                
             else 
-                return ["result"=>"failed to add homework"];
+                return response()->json (['status'=>'false','message'=>"failed to add homework"]);
+               
         }
         catch(\Exception $ex) 
         {

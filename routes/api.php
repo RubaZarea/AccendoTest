@@ -24,15 +24,22 @@ use App\Http\Controllers\API\SubmittedHomeworkController;
 Route::post("register",[UserController::class,'register']);
 
 Route::post("login", [UserController::class,'login']);
-Route::post("addSubmittedHomework",[SubmittedHomeworkController::class,'add']);
+
+
+
 
 Route::group(['middleware' => 'auth:api'], function(){
-  //Route::post("details", [UserController::class,'details']);
-   Route::get("getHomeworkByCourse/{id}", [HomeworkController::class,'homeworkByCourse']);
+   Route::post("details", [UserController::class,'details']);
+   
    Route::get("downloadHomework", [HomeworkController::class,'downloadFile']);
+   Route::post("addSubmittedHomework",[SubmittedHomeworkController::class,'add'])->middleware('studentPage');
+   Route::get("getHomeworkByCourse/{id}", [HomeworkController::class,'homeworkByCourse']);
    Route::group(['middleware' => 'TeacherPages'], function(){
         Route::delete("deleteHomework/{id}",[HomeworkController::class,'delete']);
         Route::post("addHomework",[HomeworkController::class,'add']);
+        Route::put("putHomeworkMark/{id}", [SubmittedHomeworkController::class,'edit'])->middleware('HomeworkBelongToTeacher');
+
+
     });
 });
 
