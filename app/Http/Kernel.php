@@ -67,6 +67,7 @@ class Kernel extends HttpKernel
      */
     protected $routeMiddleware = [
 
+        'CanTeacherAddMark'=> \App\Http\Middleware\CanTeacherAddMark::class,
         'studentPage' => \App\Http\Middleware\isStudent::class,
         'auth' => \App\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,

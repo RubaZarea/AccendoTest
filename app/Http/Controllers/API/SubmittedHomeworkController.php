@@ -80,17 +80,41 @@ class SubmittedHomeworkController extends Controller
 
     public function edit (Request $request)
     {
-       $validator = Validator::make($request->all(), [ 
+
+
+      //  $currentUserId=$request->user()->id;
+        $submittedHomeworkId=$request->id;
+        $submittedHomework= SubmittedHomework::find($submittedHomeworkId);
+
+    /*   if(!$submittedHomework)
+         return response()->json (['status'=>'false','message'=>"the requested submitted homework id is wrong"]);
+
+            //to check if the teacher can put a mark for the specified homework:
+          $user =DB::table('users')
+                ->join('teachers', 'users.id', '=', 'teachers.user_id')
+                ->join('courses', 'teachers.id', '=', 'courses.teacher_id')
+                ->join('homework', 'courses.id', '=', 'homework.course_id')
+                ->join('submitted_homework', 'homework.id', '=', 'submitted_homework.homework_id')
+                ->select('users.id','teachers.first_name')
+                ->where('users.id', '=', $currentUserId)
+                ->where('submitted_homework.id', '=', $submittedHomeworkId)
+                ->get();
+                   
+                    
+        if ($user->isEmpty())  
+            return response()->json (['status'=>'false','message'=>"sorry ,this homework doesn't belong to your courses"]);
+        else if ($submittedHomework->is_marked==true)
+             return response()->json (['status'=>'false','message'=>"this homework already has mark"]);*/
+        
+
+
+        $validator = Validator::make($request->all(), [ 
             'mark' => 'required|integer|between:0,100', ]
             );
 
             if ($validator->fails()) { 
              return response()->json(['error'=>$validator->errors()], 401);            
              }
-      
-       $submittedHomework= SubmittedHomework::find($request->id);
-       if($submittedHomework->is_marked==true)
-        return response()->json (['status'=>'false','message'=>"this homework already has mark"]);
 
        $submittedHomework->mark=$request->mark;
        $submittedHomework->is_marked=true;
