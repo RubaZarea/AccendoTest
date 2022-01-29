@@ -51,7 +51,7 @@ class HomeworkController extends Controller
              
 
 
-            $uploaded_file=$request->homework_requirements_file->store('apiDocuments');
+            $uploaded_file=$request->homework_requirements_file->store('homework');
 
             $homework=new Homework;
             $homework->title = $request->title;
@@ -96,12 +96,25 @@ class HomeworkController extends Controller
 
         }
 
-        public function downloadFile(Request $request)
+        public function downloadHomeworkFile(Request $request)
 
         {
-            $file_name=$request->requirement_file;
+            $validator = Validator::make($request->all(), [ 
+            'requirement_file_name' => 'required|string|ends_with:.pdf', 
+            ]);
 
-            return response()->download(storage_path('app/apiDocuments/'.$file_name),'image');
+            if ($validator->fails()) { 
+             return response()->json(['error'=>$validator->errors()], 401);            
+             }
+
+            $fileName=$request->requirement_file_name;
+
+            if(file_exists(storage_path('app/homework/'.$fileName)))
+                    return response()->download(storage_path('app/homework/'.$fileName),'file');
+            else 
+                    return response()->json (['status'=>'false','message'=>"There is no file with this name"]);
+
+           
         }
 
     }

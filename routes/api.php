@@ -28,23 +28,29 @@ Route::post("login", [UserController::class,'login']);
 Route::group(['middleware' => 'auth:api'], function(){
 
    //Route::post("details", [UserController::class,'details']);
-   Route::get("downloadHomework", [HomeworkController::class,'downloadFile']);
+   Route::get("downloadHomework", [HomeworkController::class,'downloadHomeworkFile']);
 
    Route::get("getHomeworkByCourse/{id}", [HomeworkController::class,'homeworkByCourse']);
 
-   Route::post("addSubmittedHomework",[SubmittedHomeworkController::class,'add'])->middleware('studentPage');
+   Route::post("submitHomework",[SubmittedHomeworkController::class,'add'])->middleware('studentPage');
 
    Route::group(['middleware' => 'TeacherPages'], function(){
         
         Route::post("addHomework",[HomeworkController::class,'add']);
+
+        Route::get("downloadHomeworkSolution", [SubmittedHomeworkController::class,'downloadSolutionFile']);
        
         Route::put("putHomeworkMark/{id}", [SubmittedHomeworkController::class,'edit'])->middleware('CanTeacherAddMark');
 
         Route::group(['middleware' => 'HomeworkBelongtoTeacher'], function(){
 
             Route::get("getSubmittedHomeworkByHomeworkId/{id}", [SubmittedHomeworkController::class,'submittedHomeworkByHomeworkId']);
-            
+
             Route::delete("deleteHomework/{id}",[HomeworkController::class,'delete']);
+
+
+
+            
 
             });
     });

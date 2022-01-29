@@ -38,9 +38,6 @@ class SubmittedHomeworkController extends Controller
              return response()->json(['error'=>$validator->errors()], 401);            
              }
 
-            
-            $uploaded_file=$request->solution_file->store('studentsSubmittedHomeworks');
-
           
 
             $submittedHomework=new SubmittedHomework;
@@ -54,6 +51,7 @@ class SubmittedHomeworkController extends Controller
                 return response()->json (['status'=>'false','message'=>"You already have submitted this homework"]);
             else
             {
+                $request->solution_file->store('studentsSubmittedHomeworks');
                 $submittedHomework->homework_id=$homeworkId;
                 $submittedHomework->student_id=$studentId;
                 $submittedHomework->solution_file=$request->solution_file->hashName();
@@ -82,32 +80,8 @@ class SubmittedHomeworkController extends Controller
     {
 
 
-      //  $currentUserId=$request->user()->id;
         $submittedHomeworkId=$request->id;
         $submittedHomework= SubmittedHomework::find($submittedHomeworkId);
-
-    /*   if(!$submittedHomework)
-         return response()->json (['status'=>'false','message'=>"the requested submitted homework id is wrong"]);
-
-            //to check if the teacher can put a mark for the specified homework:
-          $user =DB::table('users')
-                ->join('teachers', 'users.id', '=', 'teachers.user_id')
-                ->join('courses', 'teachers.id', '=', 'courses.teacher_id')
-                ->join('homework', 'courses.id', '=', 'homework.course_id')
-                ->join('submitted_homework', 'homework.id', '=', 'submitted_homework.homework_id')
-                ->select('users.id','teachers.first_name')
-                ->where('users.id', '=', $currentUserId)
-                ->where('submitted_homework.id', '=', $submittedHomeworkId)
-                ->get();
-                   
-                    
-        if ($user->isEmpty())  
-            return response()->json (['status'=>'false','message'=>"sorry ,this homework doesn't belong to your courses"]);
-        else if ($submittedHomework->is_marked==true)
-             return response()->json (['status'=>'false','message'=>"this homework already has mark"]);*/
-        
-
-
         $validator = Validator::make($request->all(), [ 
             'mark' => 'required|integer|between:0,100', ]
             );
@@ -121,13 +95,34 @@ class SubmittedHomeworkController extends Controller
        $result=$submittedHomework->save();
        if($result)
         return response()->json (['status'=>'true','message'=>"mark has been added successfully"]);
-    else 
+       else 
         return response()->json (['status'=>'false','message'=>"failed to add mark for this homework"]);
         
         
 
 
     }
+
+    public function downloadSolutionFile(Request $request)
+
+        {
+            $validator = Validator::make($request->all(), [ 
+            'solution_file_name' => 'required|string|ends_with:.pdf', 
+            ]);
+
+            if ($validator->fails()) { 
+             return response()->json(['error'=>$validator->errors()], 401);            
+             }
+
+            $fileName=$request->solution_file_name;
+
+            if(file_exists(storage_path('app/studentsSubmittedHomeworks/'.$fileName)))
+                    return response()->download(storage_path('app/studentsSubmittedHomeworks/'.$fileName),'file');
+            else 
+                    return response()->json (['status'=>'false','message'=>"There is no file with this name"]);
+
+           
+        }
     
 
 }
