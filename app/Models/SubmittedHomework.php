@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class SubmittedHomework extends Model
 {
     use HasFactory;
+    public function homework()
+    {
+        return $this->belongsTo(Homework::class);
+    }
+
+    
 }

@@ -81,10 +81,10 @@ class HomeworkController extends Controller
                 if ($homework)
                   {
                     $result=$homework->delete();
-                    return response()->json (['status'=>'true','message'=>"record has been deleted "]);
+                    return response()->json (['status'=>'true','message'=>"homework has been deleted "]);
                   }
                 else
-                    return response()->json (['status'=>'false','message'=>"delete operation has failed"]);
+                    return response()->json (['status'=>'false','message'=>"delete operation has failed, the homework id is wrong"]);
             }
 
              catch(\Exception $ex) 

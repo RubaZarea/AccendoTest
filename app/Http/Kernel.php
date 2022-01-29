@@ -51,6 +51,11 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\isTeacher::class,
 
         ],
+        'HomeworkBelongtoTeacher' => [
+
+          \App\Http\Middleware\isHomeworkBelongtoTeacher::class,
+
+        ],
     ];
 
     /**
@@ -63,7 +68,6 @@ class Kernel extends HttpKernel
     protected $routeMiddleware = [
 
         'studentPage' => \App\Http\Middleware\isStudent::class,
-        'HomeworkBelongToTeacher'=> \App\Http\Middleware\HomeworkBelongToTeacher::class,
         'auth' => \App\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,

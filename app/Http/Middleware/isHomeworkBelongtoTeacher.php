@@ -10,7 +10,7 @@ use App\Models\Homework;
 use App\Models\SubmittedHomework;
 use Illuminate\Support\Facades\DB;
 
-class HomeworkBelongToTeacher
+class isHomeworkBelongtoTeacher
 {
     /**
      * Handle an incoming request.
@@ -21,6 +21,7 @@ class HomeworkBelongToTeacher
      */
     public function handle(Request $request, Closure $next)
     {
+        
         $currentUserId=$request->user()->id;
         $submittedHomeworkId=$request->id;
         $submittedHomework= SubmittedHomework::find($submittedHomeworkId);
@@ -28,7 +29,7 @@ class HomeworkBelongToTeacher
        if(!$submittedHomework)
          return response()->json (['status'=>'false','message'=>"the requested id is wrong"]);
 
-        $isMarked=$submittedHomework->is_marked;
+    
 
         $user =DB::table('users')
                 ->join('teachers', 'users.id', '=', 'teachers.user_id')
@@ -42,13 +43,11 @@ class HomeworkBelongToTeacher
                    
                     
         if ($user->isEmpty())  
-            return response()->json (['status'=>'false','message'=>"sorry ,this homework can't be edited because it doesn't belong to you"]);
-        else if ($isMarked==true)
-            return response()->json (['status'=>'false','message'=>"this homework already has mark"]);
+            return response()->json (['status'=>'false','message'=>"sorry ,this homework doesn't belong to you"]);
+        
 
         else
             return $next($request); 
 
-        
-    }
+}
 }
