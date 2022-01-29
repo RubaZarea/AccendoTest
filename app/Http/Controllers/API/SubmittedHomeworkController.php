@@ -19,12 +19,21 @@ class SubmittedHomeworkController extends Controller
     
     public function submittedHomeworkByHomeworkId($id)
     {
+        try{
 
          $submittedhomeworkByHomeworkId=Homework::with("submittedHomework")
                                                     ->where("id",$id)
                                                     ->get();
 
           return response()->json(['status'=>'true','message'=>"submitted homework list according to homework id:",'homework'=>$submittedhomeworkByHomeworkId]);
+      }
+      catch(\Exception $ex) 
+                {
+                 return response()->json(['status'=>'false','message'=>$ex->getMessage()],500);
+                }
+
+
+    
     }
 
     public function add(Request $request)
@@ -79,7 +88,8 @@ class SubmittedHomeworkController extends Controller
     public function edit (Request $request)
     {
 
-
+        try
+        {
         $submittedHomeworkId=$request->id;
         $submittedHomework= SubmittedHomework::find($submittedHomeworkId);
         $validator = Validator::make($request->all(), [ 
@@ -97,6 +107,11 @@ class SubmittedHomeworkController extends Controller
         return response()->json (['status'=>'true','message'=>"mark has been added successfully"]);
        else 
         return response()->json (['status'=>'false','message'=>"failed to add mark for this homework"]);
+}
+    catch(\Exception $ex) 
+                {
+                 return response()->json(['status'=>'false','message'=>$ex->getMessage()],500);
+                }
         
         
 
@@ -106,6 +121,7 @@ class SubmittedHomeworkController extends Controller
     public function downloadSolutionFile(Request $request)
 
         {
+            try{
             $validator = Validator::make($request->all(), [ 
             'solution_file_name' => 'required|string|ends_with:.pdf', 
             ]);
@@ -121,7 +137,12 @@ class SubmittedHomeworkController extends Controller
             else 
                     return response()->json (['status'=>'false','message'=>"There is no file with this name"]);
 
-           
+           }
+
+           catch(\Exception $ex) 
+                {
+                 return response()->json(['status'=>'false','message'=>$ex->getMessage()],500);
+                }
         }
     
 
