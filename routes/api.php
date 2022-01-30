@@ -22,7 +22,7 @@ use App\Http\Controllers\API\StudentsController;
 });*/
 
 
-Route::get("test", [StudentsController::class,'save']);
+
 
 
 Route::post("register",[UserController::class,'register']);
