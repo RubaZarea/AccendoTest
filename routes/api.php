@@ -6,6 +6,8 @@ use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\HomeworkController;
 use App\Http\Controllers\API\SubmittedHomeworkController;
 use App\Http\Controllers\API\StudentsController;
+use App\Http\Controllers\API\CourseController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -30,8 +32,11 @@ Route::post("register",[UserController::class,'register']);
 Route::post("login", [UserController::class,'login']);
 
 Route::group(['middleware' => 'auth:api'], function(){
+    //  Route::post("details", [UserController::class,'details']);
 
-   //Route::post("details", [UserController::class,'details']);
+    Route::get("getCourses",[CourseController::class,'getCourses']);
+
+ 
    Route::get("downloadHomework", [HomeworkController::class,'downloadHomeworkFile']);
 
    Route::get("getHomeworkByCourse/{id}", [HomeworkController::class,'homeworkByCourse']);

@@ -7,60 +7,53 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### About Online Homework Management system
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Online Homework Management system helps teachers manage their homework online and
+put marks for homework submitted by students.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+It gives the students ability to view list of courses homework uploaded by teachers, download a homework requirements file, and then submit the homework by uploading the homework solution file.
+Also it gives teachers ability to  view list of courses homework and  students’ submitted homework those are belong to their courses(every teacher can see only his course submitted homework), create a new homework by uploading an assignment file, delete a homework, download a particular submitted homework and put a mark for it.
 
-## Learning Laravel
+### Project architecture
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+The project is written in `php` on `Laravel` framework version 8.81  based on `MVC` architecture. `Passport` have been used as an authentication system, `MySQL` as database service and `RESTful APIs`    as a source of data to communicate with backend . 
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Project Entity Relationship Diagram
 
-## Laravel Sponsors
+ Please refer to this link https://ibb.co/vqRncPR   for a visual view of the  diagram.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
 
-### Premium Partners
+ ### Project Setup 
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[CMS Max](https://www.cmsmax.com/)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
-- **[Romega Software](https://romegasoftware.com)**
+1) Make sure you have Docker installed on your machine (if you need help you can follow Steps 1 and 2 of How To Install and Use Docker on Ubuntu 20.04. link https://www.digitalocean.com/)
 
-## Contributing
+2) Make sure you have Docker Compose installed on your machine (if you need help you can follow Step 1 of How To Install and Use Docker Compose on Ubuntu 20.04. link https://www.digitalocean.com/)
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+3) After cloning the project change the branch to master `git checkout master`
 
-## Code of Conduct
+4) Copy .env.example to new file .env
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+5) Run `docker-compose build`
 
-## Security Vulnerabilities
+6) Run `docker-compose up -d`
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+7) Run `docker ps` you should see 3 container runing (accendo,mysql:5.7,nginx:
 
-## License
+8) Run `docker-compose exec app composer install`
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+9) Run `docker-compose exec app php artisan key:generate`
+
+10) Run `docker-compose exec app php artisan migrate`
+
+11) Run  `docker-compose exec app php artisan db:seed  --class=UsersSeeder
+
+12) Run  `docker-compose exec app php artisan db:seed --class=TeachersSeeder
+
+13) Run  `docker-compose exec app php artisan db:seed --class=StudentsSeeder
+
+Now when you try to run any API in the postman by using http://localhost:8000/ it should work fine 
+
+
+
