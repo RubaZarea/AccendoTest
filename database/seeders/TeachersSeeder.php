@@ -1,19 +1,23 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace Database\Seeders;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Student;
+use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use App\Models\User;
 
-class StudentsController extends Controller
+class TeachersSeeder extends Seeder
 {
-   public function save(Request $request)
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
     {
-         $studentsUserId =DB::table('students')->pluck('user_id');
+        //
+        $studentsUserId =DB::table('students')->pluck('user_id');
         $availableUsersID = DB::table('users')->select('id')->whereNotIn('id', $studentsUserId)->get()->pluck('id');
 
         for ($i = 0; $i <= 4; $i++) {
@@ -27,9 +31,15 @@ class StudentsController extends Controller
             $firstName="teacher".$i;
             $lastName="tchr";
             $Specialization=Str::random(10);
-         }
-          return $availableUsersID ; 
 
+            
+            DB::table('teachers')->insert([
+            'first_name'=>$firstName,
+            'last_name'=>$lastName,
+            'Specialization'=>$Specialization,
+            'user_id'=>$userId
+
+        ]);
+        }
     }
-
 }

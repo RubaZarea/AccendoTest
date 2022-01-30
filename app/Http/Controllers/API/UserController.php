@@ -14,8 +14,17 @@ public $successStatus = 200;
      * 
      * @return \Illuminate\Http\Response 
      */ 
-    public function login(Request $request){ 
-    
+    public function login(Request $request){
+
+
+        $validator = Validator::make($request->all(), [ 
+            'email' => 'required|email', 
+            'password' => 'required', 
+            
+        ]);
+       if ($validator->fails()) { 
+            return response()->json(['error'=>$validator->errors()], 401);            
+        }
         if(Auth::attempt(['email' => request('email'), 'password' => request('password')])){ 
             $user = Auth::user(); 
             $success['token'] =  $user->createToken('MyApp')-> accessToken; 
@@ -25,23 +34,6 @@ public $successStatus = 200;
             abort(401, 'Unauthorized');
         }
 
-       /* try
-        {
-            $validator = Validator::make($request->all(), [ 
-            'name' => 'required', 
-            'email' => 'required|email', 
-            'password' => 'required', 
-            'confirmPassword' => 'required|same:password', 
-        ]);
-            if ($validator->fails()) { 
-                $error = $validator-> errors()->all()[0];
-                return response()->json(['status'=>'false','message'=>$error,'data'=>[]],422);
-        }
-        else 
-        {
-            $user=User::
-        }
-*/
 
     }
 /** 
